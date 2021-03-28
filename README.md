@@ -15,7 +15,7 @@ Prerequisites
 Datasets:
 -------------
 
-MeLoPPR is tested on six graphs: citeseer, cora, pubmed, dblp, amazon, and youtube.
+MeLoPPR is tested on six graphs: _citeseer_, _cora_, _pubmed_, _dblp_, _amazon_, and _youtube_.
 
 This repository contains the first three, and you may download the others from [SNAP](https://snap.stanford.edu/data/)
 
@@ -23,9 +23,9 @@ This repository contains the first three, and you may download the others from [
 
 Code description
 -------------------------
-- equation_validation.py: validates the stage decomposition and linear decomposition equations
-- toy_example.py: validates the algorithm on the citeseer graph
-- PPR.py: include the optimizations discussed in the paper (with memory and CPU time measuring code commented)
+- **equation_validation.py**: validates the stage decomposition and linear decomposition equations
+- **toy_example.py**: validates the algorithm on the citeseer graph
+- **PPR.py**: include the optimizations discussed in the paper (with memory and CPU time measuring code commented)
 
 ------------------
 
