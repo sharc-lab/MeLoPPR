@@ -130,7 +130,7 @@ c = 10 # store c * k global scores to reduce memory requirement
 
 # all_results_prec_time = {}
 
-path = './'
+path = './datasets/'
 # datasets = ['citeseer_adj', 'cora_adj', 'com-amazon.ungraph', 'pubmed_adj', 'com-dblp.ungraph', 'com-youtube.ungraph']
 datasets = ['citeseer_adj']
 for dataset in datasets:

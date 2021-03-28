@@ -109,7 +109,7 @@ def build_graph(graph_name):
 
 def main():
     parser = argparse.ArgumentParser(description='Toy example of MeLoPPR')
-    parser.add_argument('--path', type=str, default='.', help='the dataset path')
+    parser.add_argument('--path', type=str, default='./datasets/', help='the dataset path')
     parser.add_argument('--dataset', type=str, default='cora_adj', help='the dataset name')
     parser.add_argument('--alpha', type=float, default=0.96, help='alpha value')
     parser.add_argument('--max_L', type=int, default=6, help='the total steps of graph diffusion (L=l1+l2)')
