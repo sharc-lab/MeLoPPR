@@ -51,8 +51,8 @@ def GD_spicy(G, S_0, L):
 
 
 
-edge_list = [(1, 9), (9, 2), (1, 10), (10, 3), (2, 4), (2, 5), (3, 6), (2, 3), (1, 7), (7, 2), (1, 8), (8, 2)]
-
+#edge_list = [(1, 9), (9, 2), (1, 10), (10, 3), (2, 4), (2, 5), (3, 6), (2, 3), (1, 7), (7, 2), (1, 8), (8, 2)]
+edge_list = [(1, 9), (9, 2), (1, 10), (10, 11), (2, 4), (2, 5), (3, 6), (2, 3), (1, 7), (7, 2), (1, 8), (8, 2), (6, 11), (5, 12),(4, 13), (13, 15), (11, 14), (14, 16)]
 
 G = nx.Graph(edge_list)
 node_list = list((G.nodes))
@@ -60,8 +60,8 @@ node_cnt = G.number_of_nodes()
 
 alpha = 0.95
 max_L = 6
-l1 = 3
-l2 = 3
+l1 = 4
+l2 = 2
 k = 5
 
 root = 1
@@ -80,39 +80,45 @@ print("########################################")
 ########### non sparse ##########
 print("Non Sparse Matrix")
 ## global diffusion
-GD_6_S0, _ = GD(G, S0, 6)
-print("== GD_6_S0:")
-print(np.round(GD_6_S0, 3))
-print("sum: %.2f" % sum(GD_6_S0))
+GD_L_S0, _ = GD(G, S0, max_L)
+print("== GD_L_S0:")
+print(np.round(GD_L_S0, 3))
+print("sum: %.2f" % sum(GD_L_S0))
 
 ## multi-level diffusion (stage decomposition)
-GD_3_S0, _ = GD(G, S0, 3)
-# print("== GD_3_S0:")
-# print(np.round(GD_3_S0, 3))
+GD_l1_S0, _ = GD(G, S0, l1)
+# print("== GD_l1_S0:")
+# print(np.round(GD_l1_S0, 3))
 
-SR = (W @ W @ W) @ S0
-GD_3_SR, _ = GD(G, SR, 3)
+W_l1 = W
+for i in range(0, l1 - 1):
+    W_l1 = W_l1 @ W
+SR = W_l1 @ S0
+GD_l2_SR, _ = GD(G, SR, l2)
 # print("== SR:")
 # print(np.round(SR, 3))
 
-ML_GD = GD_3_S0 + alpha ** 3 * GD_3_SR - alpha ** 3 * SR
+ML_GD = GD_l1_S0 + alpha ** l1 * GD_l2_SR - alpha ** l1 * SR
 print("== ML_GD:")
 print(np.round(ML_GD, 3))
 
 ########### sparse ##########
 print("\nSparse Matrix")
 ## global diffusion
-GD_6_S0, _ = GD_spicy(G, S0, 6)
-print("== GD_6_S0:")
-print(np.round(GD_6_S0, 3))
-print("sum: %.2f" % sum(GD_6_S0))
+GD_L_S0, _ = GD_spicy(G, S0, max_L)
+print("== GD_L_S0:")
+print(np.round(GD_L_S0, 3))
+print("sum: %.2f" % sum(GD_L_S0))
 
 ## multi-level diffusion (stage decomposition)
-GD_3_S0, _ = GD_spicy(G, S0, 3)
-SR = S0 * (W_spicy * W_spicy * W_spicy)
-GD_3_SR, _ = GD(G, SR, 3)
+GD_l1_S0, _ = GD_spicy(G, S0, l1)
+W_l1 = W_spicy
+for i in range(0, l1 - 1):
+    W_l1 = W_l1 * W_spicy
+SR = S0 * W_l1
+GD_l2_SR, _ = GD(G, SR, l2)
 
-ML_GD = GD_3_S0 + alpha ** 3 * GD_3_SR - alpha ** 3 * SR
+ML_GD = GD_l1_S0 + alpha ** l1 * GD_l2_SR - alpha ** l1 * SR
 print("== ML_GD:")
 print(np.round(ML_GD, 3))
 
@@ -148,8 +154,7 @@ root = 1
 ######### First Level ####################
 print("-- First level")
 S_0 = set_S_0(G, root, 1)
-G_sub_l1 = G.subgraph(list(nx.bfs_tree(G, source = (root), depth_limit = l1)))
-scores_l1, scores_l1_r = GD(G_sub_l1, S_0, l1)
+scores_l1, scores_l1_r = GD(G, S_0, l1)
 
 print("score_l1")
 print(np.round(scores_l1, 3))
