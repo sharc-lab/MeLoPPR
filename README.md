@@ -2,6 +2,7 @@ MeLoPPR
 =============================================
 
 This repository is the implementation of the paper MELOPPR: Software/Hardware Co-design for Memory-efficientLow-latency Personalized PageRank published at DAC'21.
+The paper can be found [here](https://arxiv.org/abs/2104.09616)
 
 ----------------
 
